@@ -1,0 +1,3 @@
+[submodule "onmt/modules/adaptive-softmax"]
+	path = onmt/modules/adaptive-softmax
+	url = https://github.com/OpenNMT/adaptive-softmax.git
