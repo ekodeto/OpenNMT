@@ -20,6 +20,7 @@ cmd:setCmdLineOptions(options, 'Data')
 
 onmt.Model.declareOpts(cmd)
 modelClass.declareOpts(cmd)
+onmt.AdaptiveSoftMax.declareOpts(cmd)
 onmt.train.Optim.declareOpts(cmd)
 onmt.train.Trainer.declareOpts(cmd)
 onmt.train.Checkpoint.declareOpts(cmd)

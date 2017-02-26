@@ -186,7 +186,7 @@ function Factory.buildWordDecoder(opt, dicts, verbose)
                                          opt.pre_word_vecs_dec, opt.fix_word_vecs_dec,
                                          verbose)
 
-  local generator = Factory.buildGenerator(opt.rnn_size, dicts)
+  local generator = Factory.buildGenerator(opt.rnn_size, dicts, opt.adaptive_softmax_cutoff)
 
   return Factory.buildDecoder(opt, inputNetwork, generator)
 end
@@ -199,11 +199,11 @@ function Factory.loadDecoder(pretrained, clone)
   return onmt.Decoder.load(pretrained)
 end
 
-function Factory.buildGenerator(rnnSize, dicts)
+function Factory.buildGenerator(rnnSize, dicts, adaptive_softmax_cutoff)
   if #dicts.features > 0 then
     return onmt.FeaturesGenerator(rnnSize, Factory.getOutputSizes(dicts))
   else
-    return onmt.Generator(rnnSize, dicts.words:size())
+    return onmt.Generator(rnnSize, dicts.words:size(), adaptive_softmax_cutoff)
   end
 end
 

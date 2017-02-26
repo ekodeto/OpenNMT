@@ -32,8 +32,8 @@ function LanguageModel:__init(args, dicts, verbose)
   onmt.utils.Table.merge(self.args, onmt.utils.ExtendedCmdLine.getModuleOpts(args, options))
 
   self.models.encoder = onmt.Factory.buildWordEncoder(self.args, dicts.src, verbose)
-  self.models.generator = onmt.Factory.buildGenerator(self.args.rnn_size, dicts.src)
-  self.criterion = onmt.ParallelClassNLLCriterion(onmt.Factory.getOutputSizes(dicts.src))
+  self.models.generator = onmt.Factory.buildGenerator(self.args.rnn_size, dicts.src, self.args.adaptive_softmax_cutoff)
+  self.criterion = onmt.ParallelClassNLLCriterion(onmt.Factory.getOutputSizes(dicts.src), self.args.adaptive_softmax_cutoff)
 
   self.eosProto = {}
   for _ = 1, #dicts.src.features + 1 do

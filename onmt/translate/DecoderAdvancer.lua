@@ -97,7 +97,13 @@ Returns:
 function DecoderAdvancer:expand(beam)
   local state = beam:getState()
   local decOut = state[2]
-  local out = self.decoder.generator:forward(decOut)
+  --local out = self.decoder.generator:forward(decOut)
+  local out
+  if self.models.decoder.generator.adaptive_softmax then
+    out = { self.models.decoder.generator.adaptive_softmax:getLogProb(decOut) }
+  else
+    out = self.models.decoder.generator:forward(decOut)
+  end
   local features = {}
   for j = 2, #out do
     local _, best = out[j]:max(2)
