@@ -186,9 +186,19 @@ function Factory.buildWordDecoder(opt, dicts, verbose)
                                          opt.pre_word_vecs_dec, opt.fix_word_vecs_dec,
                                          verbose)
 
-  local generator = Factory.buildGenerator(opt.rnn_size, dicts, opt.adaptive_softmax_cutoff)
+  local adaptive_softmax_cutoff
+  if opt.adaptive_softmax ~= '' then
+    adaptive_softmax_cutoff = loadstring(" return "..opt.adaptive_softmax)()
+    table.insert(adaptive_softmax_cutoff, dicts.words:size())
+    if verbose then
+      _G.logger:info(" * using adaptive_softmax_cutoff: {"..table.concat(adaptive_softmax_cutoff,',').."}")
+    end
+  end
+  local generator = Factory.buildGenerator(opt.rnn_size, dicts, adaptive_softmax_cutoff)
 
-  return Factory.buildDecoder(opt, inputNetwork, generator)
+  local decoder = Factory.buildDecoder(opt, inputNetwork, generator)
+  decoder.adaptive_softmax_cutoff = adaptive_softmax_cutoff
+  return decoder
 end
 
 function Factory.loadDecoder(pretrained, clone)

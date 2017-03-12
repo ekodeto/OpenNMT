@@ -10,6 +10,7 @@ function Generator:__init(rnnSize, outputSize, adaptive_softmax_cutoff)
 end
 
 function Generator:_buildGenerator(rnnSize, outputSize, adaptive_softmax_cutoff)
+  -- _G.logger:info(' * build generator: adaptive_softmax ' .. adaptive_softmax_cutoff)
   if not adaptive_softmax_cutoff then
     return nn.Sequential()
       :add(nn.Linear(rnnSize, outputSize))
